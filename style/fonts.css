@@ -1,0 +1,72 @@
+@font-face {
+  font-family: FibraOne-Bold;
+  src: url(./../resources/fonts/FibraOneBold.otf) format('opentype');
+}
+@font-face {
+  font-family: FibraOne-BoldIt;
+  src: url(./../resources/fonts/FibraOneBold-Italic.otf) format('opentype');
+}
+
+@font-face {
+  font-family: FibraOne-Heavy;
+  src: url(./../resources/fonts/FibraOneHeavy.otf) format('opentype');
+}
+@font-face {
+  font-family: FibraOne-HeavyIt;
+  src: url(./../resources/fonts/FibraOneHeavy-Italic.otf) format('opentype');
+}
+
+@font-face {
+  font-family: FibraOne-Light;
+  src: url(./../resources/fonts/FibraOneLight.otf) format('opentype');
+}
+@font-face {
+  font-family: FibraOne-LightIt;
+  src: url(./../resources/fonts/FibraOneLight-Italic.otf) format('opentype');
+}
+
+@font-face {
+  font-family: FibraOne-Regular;
+  src: url(./../resources/fonts/FibraOneRegular.otf) format('opentype');
+}
+@font-face {
+  font-family: FibraOne-RegularIt;
+  src: url(./../resources/fonts/FibraOneRegular-Italic.otf) format('opentype');
+}
+
+@font-face {
+  font-family: FibraOne-SemiBold;
+  src: url(./../resources/fonts/FibraOneSemiBold.otf) format('opentype');
+}
+@font-face {
+  font-family: FibraOne-SemiBoldIt;
+  src: url(./../resources/fonts/FibraOneSemiBold-Italic.otf) format('opentype');
+}
+
+@font-face {
+  font-family: FibraOne-Thin;
+  src: url(./../resources/fonts/FibraOneThin.otf) format('opentype');
+}
+@font-face {
+  font-family: FibraOne-ThinIt;
+  src: url(./../resources/fonts/FibraOneThin-Italic.otf) format('opentype');
+}
+
+@font-face {
+  font-family: FibraOne-UltraBold;
+  src: url(./../resources/fonts/FibraOneUltraBold.otf) format('opentype');
+}
+@font-face {
+  font-family: FibraOne-UltraBoldIt;
+  src: url(./../resources/fonts/FibraOneUltraBold-Italic.otf) format('opentype');
+}
+
+@font-face {
+  font-family: FibraOne-UltraLight;
+  src: url(./../resources/fonts/FibraOneUltraLight-Italic.otf)
+    format('opentype');
+}
+@font-face {
+  font-family: FibraOne-UltraLightIt;
+  src: url(./../resources/fonts/FibraOneUltraLight.otf) format('opentype');
+}

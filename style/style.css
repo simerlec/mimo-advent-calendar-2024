@@ -1,0 +1,227 @@
+@import "./tailwind.css";
+@import "./fonts.css";
+
+body,
+html {
+  min-height: 100%;
+  padding: 0;
+  margin: 0;
+  font-family: "FibraOne-Regular";
+  background: linear-gradient(#123 30%, #667);
+  @apply text-gray-700;
+}
+
+/* CSS STYLES FOR CALENDAR */
+:root {
+  --perspective: 850px;
+  --present-dimension: 8em;
+  --date-dimension: calc(var(--present-dimension) / 5);
+  --bauble-dimension: calc(var(--present-dimension) / 4.5);
+}
+
+@keyframes shake {
+  0% {
+    transform: rotate(0deg);
+  }
+  20% {
+    transform: rotate(-20deg);
+  }
+  40% {
+    transform: rotate(20deg);
+  }
+  60% {
+    transform: rotate(-10deg);
+  }
+  80% {
+    transform: rotate(10deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+#root {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+}
+
+main {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(var(--present-dimension), 1fr)
+  );
+  justify-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: calc(var(--present-dimension) * 7);
+}
+
+@media screen and (max-width: 1280px) {
+  #root {
+    padding: 0px 150px 150px;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  #root {
+    padding: 0px 100px 50px;
+  }
+  main {
+    grid-template-columns: repeat(2, minmax(var(--present-dimension), 1fr));
+  }
+}
+
+@media screen and (max-width: 500px) {
+  #root {
+    padding: 0px 50px 50px;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  #root {
+    padding: 0px 20px 50px;
+  }
+}
+
+.present {
+  position: relative;
+  display: inline-block;
+  width: var(--present-dimension);
+  height: var(--present-dimension);
+  /* margin: 0.5em; */
+  perspective: var(--perspective);
+  z-index: 1;
+}
+.present__pane,
+.present__content {
+  width: inherit;
+  height: inherit;
+}
+.present__pane {
+  position: relative;
+  background: linear-gradient(135deg, #ff816b 50%, Tomato 50%);
+  transform-style: preserve-3d;
+  transform-origin: 0;
+  perspective: var(--perspective);
+  text-align: center;
+  box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: all 0.2s ease-out;
+}
+.present__date {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--date-dimension);
+  height: var(--date-dimension);
+  margin: 0;
+  font-size: 2em;
+  line-height: var(--date-dimension);
+  background: SlateBlue;
+  color: white;
+  border-radius: 50%;
+  box-shadow: inset 0 0 10px 5px rgba(0, 0, 0, 0.15);
+}
+/* // hover styles */
+/* .present--selected {
+  z-index: 999;
+} */
+.present--selected .present__pane {
+  /* background: linear-gradient(135deg, Tomato 50%, Tomato 50%); */
+  transform: rotateY(-97deg);
+  perspective-origin: 0;
+  transition: all 0.25s ease-in;
+}
+.present--selected .present__date {
+  /* // hide date */
+  backface-visibility: hidden;
+}
+.present--selected .present__bauble {
+  display: inline-block;
+  transform-origin: 50% 0;
+  animation: shake 0.7s;
+}
+.present__content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: SlateBlue;
+  box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.15),
+    inset 0 0 30px 20px rgba(0, 0, 0, 0.15);
+  z-index: -1;
+}
+.present__bauble {
+  position: relative;
+  width: var(--bauble-dimension);
+  height: var(--bauble-dimension);
+  background: Violet;
+  /* margin: 25% auto 0 auto; */
+  font-size: var(--bauble-dimension);
+  line-height: var(--bauble-dimension);
+  border-radius: 50%;
+  text-align: center;
+}
+/* // rectangle that has pin */
+.present__bauble::after {
+  content: "";
+  position: absolute;
+  top: -5%;
+  left: 50%;
+  width: 30%;
+  height: 10%;
+  margin-left: -15%;
+  background: inherit;
+}
+/* // pin */
+.present__bauble::before {
+  content: "";
+  position: absolute;
+  top: -15%;
+  left: 50%;
+  width: 12%;
+  height: 20%;
+  margin-left: -12%;
+  border: 0.35rem solid Violet;
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.fadeIn {
+  opacity: 0;
+  animation: fadeIn 0.3s 0.5s forwards;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+audio {
+  min-width: 250px;
+  width: 100%;
+}
+
+.modal-width {
+  width: 100%;
+  max-width: min(75%, 1400px);
+}
+
+@media only screen and (max-width: 768px) {
+  .modal-width {
+    max-width: 100%;
+  }
+}
