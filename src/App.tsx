@@ -24,7 +24,6 @@ const App: FunctionComponent = () => {
   }, []);
 
   const OPTIONS = useMemo(() => {
-    console.log("rerender");
     return TS_PARTICLES_CONFIG;
   }, []);
 

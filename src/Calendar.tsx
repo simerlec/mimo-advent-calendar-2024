@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import cornerDecoration from "./../resources/corner-decoration3.png";
 import santa from "./../resources/santa.png";
 import merry from "./../resources/merry.png";
@@ -6,19 +6,45 @@ import data from "./Data";
 import Modal from "./Modal";
 
 export default function CalendarComponent() {
+  const [disableDateCheck] = useState(() => {
+    const dateCheckDisabled =
+      window.location.search.includes("disableDateCheck");
+    if (dateCheckDisabled) {
+      console.log("[DEBUG]:date check disabled");
+    }
+    return dateCheckDisabled;
+  });
   const [selectedDay, setSelectedDay] = React.useState<number | null>(
     getSelectedDayFromURL
   );
+
+  function checkForFutureDay({ index }: { index: number }) {
+    const currentDay = new Date();
+
+    return (
+      !disableDateCheck &&
+      process.env.NODE_ENV === "production" &&
+      (index + 1 > currentDay.getDate() || currentDay.getMonth() !== 11)
+    );
+  }
 
   function getSelectedDayFromURL() {
     let search = window.location.search;
     let params = new URLSearchParams(search);
     let dayNumber = params.get("day");
-    return dayNumber
-      ? isNaN(Number(dayNumber))
-        ? null
-        : Math.max(0, Number(dayNumber) - 1)
-      : null;
+
+    if (isNaN(Number(dayNumber))) {
+      return null;
+    }
+
+    const index = Math.max(0, Number(dayNumber) - 1);
+
+    //prevent peeking at future days
+    if (checkForFutureDay({ index })) {
+      return null;
+    }
+
+    return dayNumber ? Math.max(0, index) : null;
   }
 
   function onPopState() {
@@ -33,13 +59,7 @@ export default function CalendarComponent() {
   }, []);
 
   function onDayClick(index: number) {
-    // NOTE: date check
-    const currentDay = new Date();
-    if (
-      import.meta.env.VITE_DISABLE_DATE_CHECK !== "true" &&
-      process.env.NODE_ENV === "production" &&
-      (index + 1 > currentDay.getDate() || currentDay.getMonth() !== 11)
-    ) {
+    if (checkForFutureDay({ index })) {
       setSelectedDay(-1);
       return;
     }
