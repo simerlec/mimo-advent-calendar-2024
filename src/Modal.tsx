@@ -3,6 +3,7 @@ import { MdClose } from "react-icons/md";
 import { CalendarEntry } from "./Data";
 import squirrel from "./../resources/squirrel.png";
 import { useEffect, useRef, useState } from "react";
+import dayjs from "dayjs";
 
 export default function Modal({
   calendarEntry,
@@ -85,7 +86,11 @@ export default function Modal({
         {calendarEntry ? (
           <img
             ref={imgRef}
-            src={calendarEntry.image}
+            src={
+              dayjs().date() > calendarEntry.day
+                ? calendarEntry.image_uncovered
+                : calendarEntry.image
+            }
             alt="who is it"
             style={{
               transform: `perspective(1000px) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`,
