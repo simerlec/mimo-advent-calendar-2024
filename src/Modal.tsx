@@ -2,7 +2,7 @@ import React from "react";
 import { MdClose } from "react-icons/md";
 import { CalendarEntry } from "./Data";
 import squirrel from "./../resources/squirrel.png";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import dayjs from "dayjs";
 
 export default function Modal({
@@ -25,16 +25,24 @@ export default function Modal({
   }
 
   const imgRef = useRef<HTMLImageElement>(null);
-  const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const targetRotation = useRef({ x: 0, y: 0 });
   const animationFrameId = useRef<number>();
+  const currentRotation = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     function animate() {
-      setRotation((prev) => ({
-        x: prev.x + (targetRotation.current.x - prev.x) * 0.1,
-        y: prev.y + (targetRotation.current.y - prev.y) * 0.1,
-      }));
+      if (!imgRef.current) return;
+
+      currentRotation.current = {
+        x:
+          currentRotation.current.x +
+          (targetRotation.current.x - currentRotation.current.x) * 0.1,
+        y:
+          currentRotation.current.y +
+          (targetRotation.current.y - currentRotation.current.y) * 0.1,
+      };
+
+      imgRef.current.style.transform = `perspective(1000px) rotateX(${currentRotation.current.x}deg) rotateY(${currentRotation.current.y}deg)`;
       animationFrameId.current = requestAnimationFrame(animate);
     }
 
@@ -93,7 +101,6 @@ export default function Modal({
             }
             alt="who is it"
             style={{
-              transform: `perspective(1000px) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`,
               transformStyle: "preserve-3d",
               backfaceVisibility: "hidden",
               willChange: "transform",
