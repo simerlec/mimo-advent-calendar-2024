@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import cornerDecoration from "./../resources/corner-decoration3.png";
 import santa from "./../resources/santa.png";
 import merry from "./../resources/merry.png";
-import data, { CalendarEntry } from "./Data";
+import data from "./Data";
 import Modal from "./Modal";
 
 export default function CalendarComponent() {

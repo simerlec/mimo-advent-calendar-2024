@@ -2,6 +2,7 @@ import React from "react";
 import { MdClose } from "react-icons/md";
 import { CalendarEntry } from "./Data";
 import squirrel from "./../resources/squirrel.png";
+import { useEffect, useRef, useState } from "react";
 
 export default function Modal({
   calendarEntry,
@@ -22,6 +23,45 @@ export default function Modal({
     closeModal();
   }
 
+  const imgRef = useRef<HTMLImageElement>(null);
+  const [rotation, setRotation] = useState({ x: 0, y: 0 });
+  const targetRotation = useRef({ x: 0, y: 0 });
+  const animationFrameId = useRef<number>();
+
+  useEffect(() => {
+    function animate() {
+      setRotation((prev) => ({
+        x: prev.x + (targetRotation.current.x - prev.x) * 0.1,
+        y: prev.y + (targetRotation.current.y - prev.y) * 0.1,
+      }));
+      animationFrameId.current = requestAnimationFrame(animate);
+    }
+
+    animationFrameId.current = requestAnimationFrame(animate);
+    return () => {
+      if (animationFrameId.current) {
+        cancelAnimationFrame(animationFrameId.current);
+      }
+    };
+  }, []);
+
+  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    if (!imgRef.current) return;
+
+    const rect = imgRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    targetRotation.current = {
+      x: ((e.clientY - centerY) / (rect.height / 2)) * -10,
+      y: ((e.clientX - centerX) / (rect.width / 2)) * 10,
+    };
+  }
+
+  function resetRotation() {
+    targetRotation.current = { x: 0, y: 0 };
+  }
+
   return (
     <div
       onClick={(e) => onCloseModal(e)}
@@ -32,42 +72,30 @@ export default function Modal({
           e.preventDefault();
           e.stopPropagation();
         }}
-        className="flex flex-col relative shadow bg-white rounded-md pt-10 pb-5 px-10 modal-width box-border overflow-y-auto max-h-full sm:max-h-[75%] "
+        onMouseMove={handleMouseMove}
+        onMouseLeave={resetRotation}
+        className="flex flex-col relative shadow bg-product2-background-secondary rounded-2xl p-10 sm:px-10 box-border overflow-y-auto max-h-full sm:max-h-[75%]"
       >
         <button
           onClick={(e) => onCloseModal(e)}
-          className="absolute top-3 right-3 text-2xl self-end hover:text-red-700"
+          className="absolute top-3 right-3 text-2xl self-end hover:bg-product2-background-secondary rounded-lg p-1 text-product2-content-secondary"
         >
           <MdClose></MdClose>
         </button>
         {calendarEntry ? (
-          <div>
-            <img
-              src={calendarEntry.image}
-              alt="delicious looking food"
-              className="rounded-lg object-cover w-1/3 min-w-[100%] md:float-right md:min-w-[250px] md:ml-6 max-h-[400px]
-                    "
-            />
-            <h2>{calendarEntry.name}</h2>
-            <h3>Ingredients</h3>
-            <ul>
-              {calendarEntry.ingredients.map((ingredient, index) => (
-                <li key={index}>{ingredient}</li>
-              ))}
-            </ul>
-            <h3>Instructions ({calendarEntry.instructions.length} steps)</h3>
-            <ol className="mt-4 space-y-2">
-              {calendarEntry.instructions.map((instruction, index) => (
-                <li key={index}>{instruction}</li>
-              ))}
-            </ol>
-            {calendarEntry.story && (
-              <>
-                <h3>The Story</h3>
-                <p>{calendarEntry.story}</p>
-              </>
-            )}
-          </div>
+          <img
+            ref={imgRef}
+            src={calendarEntry.image}
+            alt="who is it"
+            style={{
+              transform: `perspective(1000px) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`,
+              transformStyle: "preserve-3d",
+              backfaceVisibility: "hidden",
+              willChange: "transform",
+              transition: "transform 0.1s",
+            }}
+            className="max-w-[400px] object-contain filter drop-shadow-lg hover:scale-[102%] transition-all duration-300"
+          />
         ) : (
           <>
             <img
@@ -75,7 +103,9 @@ export default function Modal({
               alt="squirrel"
               className="rounded-lg object-cover self-center"
             ></img>
-            <p className="mt-2 text-center">No peeking you nosy squirrel 😘 </p>
+            <p className="mt-2 text-center text-product2-content-primary">
+              No peeking you nosy squirrel 😘
+            </p>
           </>
         )}
       </div>
