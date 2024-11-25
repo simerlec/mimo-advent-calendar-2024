@@ -79,8 +79,6 @@ export default function Modal({
         : `../resources/images/${calendarEntry.image}`
       : squirrel;
 
-  console.log(calendarEntry);
-
   return (
     <div
       onClick={(e) => onCloseModal(e)}

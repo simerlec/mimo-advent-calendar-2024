@@ -56,6 +56,4 @@ const data: CalendarData = POTM.reduce(
   {}
 );
 
-console.log(data);
-
 export default data;
