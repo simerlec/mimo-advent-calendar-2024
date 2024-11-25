@@ -45,7 +45,7 @@ export interface CalendarData {
   [key: number]: CalendarEntry;
 }
 
-type POTMEntry =
+type POTMDataEntry =
   | {
       type: "potm";
       regular: string;
@@ -55,7 +55,7 @@ type POTMEntry =
       type: "empty";
     };
 
-const POTM: POTMEntry[] = [
+const POTMData: POTMDataEntry[] = [
   { type: "potm", regular: day1, uncovered: day1_uncovered },
   { type: "potm", regular: day2, uncovered: day2_uncovered },
   { type: "potm", regular: day3, uncovered: day3_uncovered },
@@ -89,7 +89,7 @@ export type CalendarEntry =
       day: number;
     };
 
-const data: CalendarData = POTM.reduce(
+const data: CalendarData = POTMData.reduce(
   (acc: CalendarData, curr, index: number) => {
     if (curr.type === "empty") {
       acc[index] = {
