@@ -81,6 +81,11 @@ export default function CalendarComponent() {
         src={merry}
         alt="merry christmas"
       ></img>
+      {disableDateCheck && (
+        <p className="text-red-500 text-center py-10">
+          [DEBUG]: Date check disabled
+        </p>
+      )}
       <main>
         {Array(24)
           .fill(0)

@@ -2,6 +2,7 @@ import React from "react";
 import { MdClose } from "react-icons/md";
 import { CalendarEntry } from "./Data";
 import squirrel from "./../resources/squirrel.png";
+import mascotSad from "./../resources/mascotSad.png";
 import { useEffect, useRef } from "react";
 import dayjs from "dayjs";
 
@@ -71,6 +72,15 @@ export default function Modal({
     targetRotation.current = { x: 0, y: 0 };
   }
 
+  const imageSrc =
+    calendarEntry.type === "potm"
+      ? dayjs().date() > calendarEntry.day
+        ? `../resources/images/${calendarEntry.image_uncovered}`
+        : `../resources/images/${calendarEntry.image}`
+      : squirrel;
+
+  console.log(calendarEntry);
+
   return (
     <div
       onClick={(e) => onCloseModal(e)}
@@ -92,22 +102,30 @@ export default function Modal({
           <MdClose></MdClose>
         </button>
         {calendarEntry ? (
-          <img
-            ref={imgRef}
-            src={
-              dayjs().date() > calendarEntry.day
-                ? calendarEntry.image_uncovered
-                : calendarEntry.image
-            }
-            alt="who is it"
-            style={{
-              transformStyle: "preserve-3d",
-              backfaceVisibility: "hidden",
-              willChange: "transform",
-              transition: "transform 0.1s",
-            }}
-            className="max-w-[400px] object-contain filter drop-shadow-lg hover:scale-[102%] transition-all duration-300"
-          />
+          calendarEntry.type === "potm" ? (
+            <img
+              ref={imgRef}
+              src={imageSrc}
+              alt="who is it"
+              style={{
+                transformStyle: "preserve-3d",
+                backfaceVisibility: "hidden",
+                willChange: "transform",
+                transition: "transform 0.1s",
+              }}
+              className="max-w-[400px] object-contain filter drop-shadow-lg hover:scale-[102%] transition-all duration-300"
+            />
+          ) : (
+            <div className="flex flex-col items-center space-y-8">
+              <img src={mascotSad} alt="mascot sad" />
+              <h1 className="text-2xl font-bold text-product2-content-accentLight">
+                404 - POTM not found
+              </h1>
+              <p className="text-lg text-product2-content-primary font">
+                Hire more Android devs!
+              </p>
+            </div>
+          )
         ) : (
           <>
             <img
