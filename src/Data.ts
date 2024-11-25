@@ -3,30 +3,30 @@ export interface CalendarData {
 }
 
 const POTM = [
-  "helene",
-  "kedson",
-  "thomas",
-  "andrea",
-  "peter",
-  "georg",
-  "milica",
+  "-k6x0ur", // helene
+  "2030i5z", // christopher
+  "1ooz9d", // kevin
+  "-ndf2qx", // andrea
+  "1rfwng", // peter
+  "1mhnwm", // georg
+  "-hrhnt5", // milica
   "EMPTY",
-  "imre",
-  "kevin",
-  "johannes",
-  "sheila",
-  "alex",
-  "christopher",
+  "1xd93", // imre
+  "-ego3r0", // thomas
+  "-nualxw", // johannes
+  "-exw6qa", // sheila
+  "1kwambv", // alex
+  "-irwz5k", // kedson
   "EMPTY",
-  "lorenz",
-  "dennis",
-  "venkat",
-  "katya",
-  "filip",
-  "merci",
-  "EMPTY",
-  "henry",
-  "zsofi",
+  "-i54rem", // lorenz
+  "-m321w5", // dennis
+  "-dk8x7l", // venkat
+  "1ome7a", // katya
+  "1m0cts", // filip
+  "1pshc0", // merci
+  "EMPTY", // EMPTY
+  "1n1frs", // henry
+  "1x6opl", // zsofi
 ];
 
 export type CalendarEntry =
