@@ -73,10 +73,10 @@ export default function Modal({
   }
 
   const imageSrc =
-    calendarEntry.type === "potm"
+    calendarEntry?.type === "potm"
       ? dayjs().date() > calendarEntry.day
-        ? `../resources/images/${calendarEntry.image_uncovered}`
-        : `../resources/images/${calendarEntry.image}`
+        ? calendarEntry.image_uncovered
+        : calendarEntry.image
       : squirrel;
 
   return (
