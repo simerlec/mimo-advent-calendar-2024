@@ -9,7 +9,7 @@
     "start": "npm run build && npm run serve"
   },
   "dependencies": {
-    "@tsparticles/all": "^3.5.0",
+    "@tsparticles/all": "^3.7.1",
     "@tsparticles/engine": "^3.5.0",
     "@tsparticles/react": "^3.0.0",
     "dayjs": "^1.11.13",
