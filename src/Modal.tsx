@@ -11,7 +11,7 @@ export default function Modal({
   isShown,
   closeModal,
 }: {
-  calendarEntry: CalendarEntry;
+  calendarEntry: CalendarEntry | null;
   isShown: boolean;
   closeModal: () => void;
 }) {

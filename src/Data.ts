@@ -109,4 +109,9 @@ const data: CalendarData = POTMData.reduce(
   {}
 );
 
+export const doors = [
+  17, 7, 10, 9, 1, 16, 2, 23, 20, 14, 15, 12, 22, 3, 4, 19, 24, 21, 8, 5, 11,
+  13, 6, 18,
+];
+
 export default data;

@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import cornerDecoration from "./../resources/corner-decoration3.png";
 import santa from "./../resources/santa.png";
 import merry from "./../resources/merry.png";
-import data from "./Data";
+import data, { doors } from "./Data";
 import Modal from "./Modal";
+import dayjs from "dayjs";
+import mascotSad from "./../resources/mascotSad.png";
 
 export default function CalendarComponent() {
   const [disableDateCheck] = useState(() => {
@@ -18,13 +20,11 @@ export default function CalendarComponent() {
     getSelectedDayFromURL
   );
 
-  function checkForFutureDay({ index }: { index: number }) {
-    const currentDay = new Date();
-
+  function checkForFutureDay({ doorNumber }: { doorNumber: number }) {
     return (
       !disableDateCheck &&
       process.env.NODE_ENV === "production" &&
-      (index + 1 > currentDay.getDate() || currentDay.getMonth() !== 11)
+      (doorNumber > dayjs().date() || dayjs().month() !== 11)
     );
   }
 
@@ -33,18 +33,18 @@ export default function CalendarComponent() {
     let params = new URLSearchParams(search);
     let dayNumber = params.get("day");
 
-    if (isNaN(Number(dayNumber))) {
+    if (!dayNumber || isNaN(Number(dayNumber))) {
       return null;
     }
 
-    const index = Math.max(0, Number(dayNumber) - 1);
+    const doorNumber = Math.min(Math.max(1, Number(dayNumber)), 24);
 
     //prevent peeking at future days
-    if (checkForFutureDay({ index })) {
+    if (checkForFutureDay({ doorNumber })) {
       return null;
     }
 
-    return dayNumber ? Math.max(0, index) : null;
+    return doorNumber;
   }
 
   function onPopState() {
@@ -58,20 +58,26 @@ export default function CalendarComponent() {
     };
   }, []);
 
-  function onDayClick(index: number) {
-    if (checkForFutureDay({ index })) {
+  function onDayClick(doorNumber: number) {
+    if (checkForFutureDay({ doorNumber })) {
       setSelectedDay(-1);
       return;
     }
 
-    setSelectedDay(index);
+    setSelectedDay(doorNumber);
     window.history.pushState(
       null,
       "",
-      `${window.location.pathname}?day=${index + 1}`
+      `${window.location.pathname}?day=${doorNumber}`
     );
     document.body.style.overflow = "hidden";
     document.body.style.position = "relative";
+  }
+
+  function shouldDoorBeOpen(doorNumber: number) {
+    const currentDay = dayjs().date();
+    const currentMonth = dayjs().month();
+    return doorNumber < currentDay && currentMonth === 11;
   }
 
   return (
@@ -87,31 +93,36 @@ export default function CalendarComponent() {
         </p>
       )}
       <main>
-        {Array(24)
-          .fill(0)
-          .map((_, index) => {
-            return (
-              <article
-                key={index}
-                onClick={() => onDayClick(index)}
-                className={
-                  selectedDay === index
-                    ? "present present--selected"
-                    : "present"
-                }
-              >
-                <div className="present__pane">
-                  <h2 className="present__date">{index + 1}</h2>
-                </div>
-                <div className="present__content">
+        {doors.map((doorNumber) => {
+          return (
+            <article
+              key={doorNumber}
+              onClick={() => onDayClick(doorNumber)}
+              className={
+                selectedDay === doorNumber || shouldDoorBeOpen(doorNumber)
+                  ? "present present--selected"
+                  : "present"
+              }
+            >
+              <div className="present__pane">
+                <h2 className="present__date">{doorNumber}</h2>
+              </div>
+              <div className="present__content">
+                {doorNumber === 8 || doorNumber === 15 || doorNumber === 22 ? (
+                  <img className="h-20 w-20" src={mascotSad} alt="mascot sad" />
+                ) : (
                   <div className="present__bauble">🎁</div>
-                </div>
-              </article>
-            );
-          })}
+                )}
+                <span className="text-product2-content-secondary absolute bottom-2 right-3">
+                  {doorNumber}
+                </span>
+              </div>
+            </article>
+          );
+        })}
       </main>
       <Modal
-        calendarEntry={data[selectedDay || 0]}
+        calendarEntry={selectedDay ? data[selectedDay - 1] : null}
         isShown={selectedDay !== null}
         closeModal={() => {
           setSelectedDay(null);
